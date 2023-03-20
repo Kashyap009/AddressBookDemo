@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "@fortawesome/fontawesome-free@6.2.1",
+      "destination": "wwwroot/fortawesome/fontawesome-free/",
+      "files": [
+        "css/all.min.css",
+        "css/brands.min.css",
+        "js/all.min.js",
+        "js/brands.min.js"
+      ]
+    }
+  ]
+}

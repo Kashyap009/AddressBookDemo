@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Country Add/Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AddressBookDemo.Areas.LOC_Country.Models.LOC_CountryModel
+
+
+
+    <div>
+        <h2>Add Country Data</h2>
+    <h3>@TempData["CountryInsertMsg"]</h3>
+        <form method="post" asp-controller="LOC_Country" asp-action="Save" enctype="multipart/form-data">
+                    @Html.HiddenFor(x=>x.CountryID)
+                    
+            <div class="mb-3">
+            <label><span class="text-danger">*</span>Country Name:</label>
+            <input type="text" class="form-control" placeholder="Enter Country name" asp-for="CountryName">
+            <span asp-validation-for="CountryName" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3">
+            <label><span class="text-danger">*</span>Country Code:</label>
+            <input type="text" class="form-control" placeholder="Enter Country code" asp-for="CountryCode">
+            <span asp-validation-for="CountryCode" class="text-danger"></span>
+
+            </div>
+        
+            @*<div class="mb-3">
+                <label>Creation Date:</label>
+                <input type="date" class="form-control" placeholder="Enter Creation date" asp-for="CreationDate">
+            </div>
+            <div class="mb-3">
+                <label>Modification Date:</label>
+                <input type="date" class="form-control" placeholder="Enter Modification date" asp-for="Modification">
+            </div>*@
+            
+            <input type="submit" class="btn btn-success">
+        <input type="submit" class="btn btn-danger" value="Cancel" asp-controller="LOC_Country" asp-action="Index">
+        </form>
+    </div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

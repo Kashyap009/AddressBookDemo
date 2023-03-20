@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "State Add/Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AddressBookDemo.Areas.LOC_City.Models.LOC_CityModel
+
+
+
+    <div>
+        <h2>Add City Data</h2>
+    <h3>@TempData["CityInsertMsg"]</h3>
+        <form method="post" asp-controller="LOC_City" asp-action="Save">
+            @Html.HiddenFor(x=>x.CityID)
+            <div class="mb-3">
+            <label><span class="text-danger">*</span>Country Name:</label>
+            <select class="form-control" asp-for="CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))" onchange="fnonStateChange();">
+                
+                    <option value="">Select Country</option>
+                </select>
+            <span asp-validation-for="CountryID" class="text-danger"></span>
+
+            </div>
+        <div class="mb-3">
+            <label><span class="text-danger">*</span>State Name:</label>
+            <select class="form-control" asp-for="StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+                <option value="">Select State</option>
+            </select>
+            <span asp-validation-for="StateID" class="text-danger"></span>
+        </div>
+            <div class="mb-3">
+            <label><span class="text-danger">*</span>City Name:</label>
+            <input type="text" class="form-control" placeholder="Enter City name" asp-for="CityName">
+            <span asp-validation-for="CityName" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3">
+            <label><span class="text-danger">*</span>City Code:</label>
+                <input type="text" class="form-control" placeholder="Enter City code" asp-for="CityCode">
+            <span asp-validation-for="CityCode" class="text-danger"></span>
+
+            </div>
+            @*<div class="mb-3">
+                <label>State ID:</label>
+                <input type="text" class="form-control" placeholder="Enter State ID" asp-for="StateID">
+            </div>*@
+            @*<div class="mb-3">
+                <label>Creation Date:</label>
+                <input type="date" class="form-control" placeholder="Enter Creation date" asp-for="CreationDate">
+            </div>
+            <div class="mb-3">
+                <label>Modification Date:</label>
+                <input type="date" class="form-control" placeholder="Enter Modification date" asp-for="Modification">
+            </div>*@
+           @* <div class="mb-3">
+                <label>Country ID:</label>
+                <input type="text" class="form-control" placeholder="Enter Country ID" asp-for="CountryID">
+            </div>
+*@
+        <input type="submit" class="btn btn-success">
+        <input type="submit" class="btn btn-danger" value="Cancel" asp-controller="LOC_City" asp-action="Index">
+    </form> 
+    </div>
+
+<script>
+    function fnonStateChange() {
+        var CountryID = $("#CountryID").val();
+        if (CountryID !== "") {
+            $("#StateID").empty();
+            $("#StateID").append($("<option></option>").val("").html("Select State"));
+            $.ajax(
+                {
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "@Url.Action("DropdownByCountry", "LOC_City")" + "?&CountryID=" + CountryID,
+                    data: {},
+                    datatype: "json",
+                    success: function (Result) {
+                        $.each(Result,
+                            function (key, value) {
+                                $("#StateID").append($("<option></option>").val(value.stateID).html(value.stateName));
+                            });
+                    },
+                    error: function (r) {
+                        alert("Error while loading combobox.");
+                    }
+                });
+        }
+        else {
+            $("#StateID").empty();
+            $("#StateID").append($("<option></option>").val("").html("Select State"));
+        }
+    }
+       
+</script>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
